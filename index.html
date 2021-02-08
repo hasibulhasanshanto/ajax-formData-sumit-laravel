@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form method="POST" role="form" enctype="multipart/form-data">
+        {{ csrf_field() }}
+    
+        <label for="pro_name">Name</label>
+        <input type="text" class="form-control" name="pro_name" id="pro_name" placeholder="Enter product name">
+    
+        <label for="category_id">Choose Category</label>
+        <select name="category_name" id="category_name">
+            <option value=""> --Select Category -- </option>
+            @foreach ($categoryname_array as $data)
+            <option value="{{ $data->name }}">{{$data->name}}</option>
+            @endforeach
+        </select>
+    
+        <label for="photos">Choose 5 Images</label>
+        <input multiple name="photos[]" type="file">
+    
+        <button type="button" class="btn btn-primary" onclick="purchaseProduct()">Save</button>
+    
+    </form>
+
+    <script>
+        function purchaseProduct() {
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+
+            let formData = new FormData($('#purchase-form')[0]);
+
+            $.ajax({
+                type: 'POST',
+                url: "{{ route('purchase.store') }}",
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function (result) {
+                    console.log(result);
+                }
+            });
+        }
+        // OR 
+
+    </script>
+</body>
+</html>

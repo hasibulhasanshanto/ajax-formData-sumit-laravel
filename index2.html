@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <form method="POST" id="storeTag">
+        <div class="modal-body"> 
+    
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="form-group form-group-default">
+                        <label>Tag Name</label>
+                        <input type="text" class="form-control form_ash" name="tag_name" id="tag_name" autocomplete="off">
+                    </div>
+                    <div class="form-group form-group-default">
+                        <label>Tag Description</label>
+                        <textarea name="tag_desc" class="form-control form_ash" id="tag_desc" rows="6"></textarea>
+                    </div>
+                </div>
+            </div>
+    
+        </div>
+        <div class="modal-footer no-bd">
+            <button type="button" class="btn btn-primary" onclick="storeTag()" data-dismiss="modal">Add</button>
+            <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+        </div>
+    </form>
+
+    <script>
+        function storeTag() {
+            let tag_name = $('#tag_name').val();
+            let tag_desc = $('#tag_desc').val();
+            let token = $("meta[name='csrf-token']").attr("content");
+
+            $.ajax({
+                url: "/products/tag/",
+                type: 'POST',
+                data: {
+                    "tag_name": tag_name,
+                    "tag_desc": tag_desc,
+                    "_token": token,
+                },
+                success: function (result) {
+                    console.log(result);
+                }
+            });
+            $('#tag_name').val('');
+            $('#tag_desc').val('');
+        }
+
+    </script>
+</body>
+
+</html>
